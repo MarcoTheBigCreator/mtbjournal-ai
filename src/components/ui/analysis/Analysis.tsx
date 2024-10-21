@@ -32,7 +32,7 @@ export const Analysis = ({
     { label: 'Recommendations', value: recommendation },
   ];
 
-  const { bg, text } = getColorClasses(color);
+  const { bg, text, border } = getColorClasses(color);
 
   const onDeleteEntry = async () => {
     setIsDeleting(true);
@@ -42,7 +42,13 @@ export const Analysis = ({
   };
 
   return (
-    <div className="bg-neutral-800 bg-opacity-50 backdrop-blur-md rounded-xl border border-violet-500 overflow-hidden">
+    <div
+      className={cn(
+        'bg-neutral-800 bg-opacity-50 backdrop-blur-md rounded-xl border overflow-hidden',
+        border,
+        styles[border]
+      )}
+    >
       <div
         className={cn(
           'px-6 py-4 bg-opacity-50 backdrop-blur-sm',

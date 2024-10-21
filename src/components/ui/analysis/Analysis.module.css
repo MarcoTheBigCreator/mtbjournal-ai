@@ -115,3 +115,61 @@
 .text-slate-300 {
   color: rgb(203, 213, 225) !important;
 }
+
+.border-red-500 {
+  border-color: rgb(239, 68, 68) !important;
+}
+.border-blue-500 {
+  border-color: rgb(59, 130, 246) !important;
+}
+.border-green-500 {
+  border-color: rgb(34, 197, 94) !important;
+}
+.border-yellow-500 {
+  border-color: rgb(234, 179, 8) !important;
+}
+.border-purple-500 {
+  border-color: rgb(168, 85, 247) !important;
+}
+.border-pink-500 {
+  border-color: rgb(236, 72, 153) !important;
+}
+.border-indigo-500 {
+  border-color: rgb(99, 102, 241) !important;
+}
+.border-gray-500 {
+  border-color: rgb(107, 114, 128) !important;
+}
+.border-violet-500 {
+  border-color: rgb(139, 92, 246) !important;
+}
+.border-orange-500 {
+  border-color: rgb(249, 115, 22) !important;
+}
+.border-teal-500 {
+  border-color: rgb(20, 184, 166) !important;
+}
+.border-cyan-500 {
+  border-color: rgb(6, 182, 212) !important;
+}
+.border-lime-500 {
+  border-color: rgb(132, 204, 22) !important;
+}
+.border-amber-500 {
+  border-color: rgb(245, 158, 11) !important;
+}
+.border-emerald-500 {
+  border-color: rgb(16, 185, 129) !important;
+}
+.border-fuchsia-500 {
+  border-color: rgb(217, 70, 239) !important;
+}
+.border-rose-500 {
+  border-color: rgb(244, 63, 94) !important;
+}
+.border-sky-500 {
+  border-color: rgb(14, 165, 233) !important;
+}
+.border-slate-500 {
+  border-color: rgb(100, 116, 139) !important;
+}

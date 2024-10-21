@@ -58,7 +58,7 @@ export const Editor = ({ entry }: EditorProps) => {
         <section className="flex-grow lg:w-2/3 h-full">
           <div
             className={cn(
-              'relative h-full bg-neutral-800 bg-opacity-50 backdrop-blur-md rounded-xl border transition-all duration-300',
+              'relative h-full bg-neutral-800 bg-opacity-50 backdrop-blur-md rounded-xl py-2 border transition-all duration-300',
               isFocused
                 ? 'border-violet-400 shadow-[0_0_0_2px_rgba(167,139,250,0.3)]'
                 : 'border-violet-500'

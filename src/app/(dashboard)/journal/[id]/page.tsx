@@ -10,7 +10,7 @@ interface EntryPageProps {
 }
 
 export default async function EntryPage({ params }: EntryPageProps) {
-  const { userId } = auth();
+  const { userId } = await auth();
   const { id } = params;
 
   if (!userId) {

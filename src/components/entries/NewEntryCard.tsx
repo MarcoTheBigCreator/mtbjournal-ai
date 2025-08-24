@@ -17,7 +17,7 @@ export const NewEntryCard = () => {
   return (
     <Card
       onClick={handleNewEntry}
-      className="flex cursor-pointer items-center justify-center h-full bg-violet-700 bg-opacity-20 backdrop-blur-lg hover:bg-opacity-30 transition-all duration-200 border-violet-500"
+      className="flex cursor-pointer items-center justify-center h-full bg-violet-700/50 backdrop-blur-lg hover:bg-violet-700/40 transition-all duration-200 border-violet-500"
     >
       <CardContent className="flex flex-col items-center p-6">
         <PlusCircle className="w-12 h-12 mb-2 text-violet-300" />

@@ -5,21 +5,22 @@ import { titleFont } from '@/config';
 import { EntryGrid, Pagination } from '@/components';
 
 interface JournalSearchParamsProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export default async function JournalPage({
   searchParams,
 }: JournalSearchParamsProps) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/sign-in');
   }
 
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+  const params = await searchParams;
+  const page = params.page ? parseInt(params.page) : 1;
 
   const user = await getUserByClerkId(userId);
 

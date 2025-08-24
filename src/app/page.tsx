@@ -6,8 +6,8 @@ import { titleFont } from '@/config';
 import { cn } from '@/lib';
 import { ArrowRight } from 'lucide-react';
 
-export default function Home() {
-  const { userId } = auth();
+export default async function Home() {
+  const { userId } = await auth();
 
   const href = userId ? '/journal' : '/new-user';
 

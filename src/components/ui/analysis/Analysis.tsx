@@ -89,7 +89,7 @@ export const Analysis = ({
           </div>
         ))}
       </div>
-      <div className="px-6 py-4 border-t border-violet-300 border-opacity-30">
+      <div className="px-6 py-4 border-violet-300 border-opacity-30">
         <Button
           onClick={onDeleteEntry}
           className={cn(

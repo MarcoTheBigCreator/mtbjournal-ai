@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String         @id @default(uuid())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  clerkId        String         @unique
+  email          String         @unique
+  journalEntries JournalEntry[]
+  AiAnalysis     AiAnalysis[]
+}
+
+model JournalEntry {
+  id         String      @id @default(uuid())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  content    String      @db.Text
+  aiAnalysis AiAnalysis?
+
+  @@unique([userId, id])
+}
+
+model AiAnalysis {
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  journalEntryId String
+  journalEntry   JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  color          String       @default("purple")
+  summary        String       @default("N/A") @db.Text
+  subject        String       @default("N/A")
+  mood           String       @default("N/A")
+  negative       Boolean      @default(false)
+  recommendation String       @default("N/A") @db.Text
+
+  @@unique([journalEntryId])
+}

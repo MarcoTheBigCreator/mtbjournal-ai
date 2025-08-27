@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import { getEntriesByUserIdPaginated, getUserByClerkId } from '@/actions';
+import { getEntriesByUserIdPaginated } from '@/actions';
 import { titleFont } from '@/config';
 import { EntryGrid, Pagination } from '@/components';
 
@@ -22,10 +22,7 @@ export default async function JournalPage({
   const params = await searchParams;
   const page = params.page ? parseInt(params.page) : 1;
 
-  const user = await getUserByClerkId(userId);
-
   const { entries, totalPages } = await getEntriesByUserIdPaginated({
-    userId: user.id,
     page,
   });
 

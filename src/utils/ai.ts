@@ -10,7 +10,7 @@ const getPrompt = async (content: string) => {
 
   const prompt = new PromptTemplate({
     template:
-      'Analyze the following journal entry. Follow the instructions and format your response to match the format instructions, no matter what! \n{format_instructions}\n{entry}',
+      'Analyze the following journal entry in English.Follow the instructions and output format exactly as specified.Always respond in English, without translating to any other language. No matter what! \n{format_instructions}\n{entry}',
     inputVariables: ['entry'],
     partialVariables: { format_instructions },
   });
@@ -24,8 +24,9 @@ export const analyze = async (content: string) => {
   const input = await getPrompt(content);
 
   const model = new ChatOpenAI({
-    temperature: 0.5,
-    model: 'gpt-4o-mini-2024-07-18',
+    model: 'gpt-5-mini',
+    verbosity: 'medium',
+    reasoning: { effort: 'medium' },
   });
 
   const result = await model.invoke(input);

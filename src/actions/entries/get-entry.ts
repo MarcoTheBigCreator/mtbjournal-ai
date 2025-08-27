@@ -1,13 +1,23 @@
 'use server';
 
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/utils';
+import { getUserByClerkId } from '../user/get-user-by-clerk-id';
 
-export const getEntry = async (userId: string, entryId: string) => {
+export const getEntry = async (entryId: string) => {
+  const { userId: clerkUserId } = await auth();
+
+  if (!clerkUserId) {
+    throw new Error('Unauthorized: User not authenticated');
+  }
+
+  const user = await getUserByClerkId(clerkUserId);
+
   try {
     const entry = await prisma.journalEntry.findUnique({
       where: {
         userId_id: {
-          userId: userId,
+          userId: user.id,
           id: entryId,
         },
       },
@@ -18,7 +28,7 @@ export const getEntry = async (userId: string, entryId: string) => {
 
     if (!entry) {
       throw new Error(
-        'Entry not found with the given id' + entryId + ' and userId' + userId
+        'Entry not found with the given id' + entryId + ' and userId' + user.id
       );
     }
 

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { Editor } from '@/components';
-import { getEntry, getUserByClerkId } from '@/actions';
+import { getEntry } from '@/actions';
 
 interface EntryPageProps {
   params: {
@@ -17,10 +17,7 @@ export default async function EntryPage({ params }: EntryPageProps) {
     redirect('/sign-in');
   }
 
-  const journalUser = await getUserByClerkId(userId);
-  const journalUserId = journalUser.id;
-
-  const entry = await getEntry(journalUserId, id);
+  const entry = await getEntry(id);
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-full">

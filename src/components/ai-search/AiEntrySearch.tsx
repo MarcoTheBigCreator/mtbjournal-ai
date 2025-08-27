@@ -16,7 +16,7 @@ export const AiEntrySearch = () => {
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submitted');
+    console.log(e.currentTarget.value, 'submitted');
   };
 
   return (

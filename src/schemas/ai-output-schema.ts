@@ -4,31 +4,31 @@ export const aiOutputSchema = z.object({
   color: z
     .string()
     .describe(
-      'a color that represents the mood of the entry you can choose of this variety (red, blue ,green ,yellow ,purple, pink ,indigo ,gray ,violet ,orange, teal ,cyan, lime, amber, emerald ,fuchsia, rose, sky, slate). Example blue for representing sadness.'
+      'A color representing the mood of the journal entry. Choose one from this list: red, blue, green, yellow, purple, pink, indigo, gray, violet, orange, teal, cyan, lime, amber, emerald, fuchsia, rose, sky, slate. Use **color psychology** to assign the color based on the emotions expressed in the entry. For example, blue for sadness, red for anger or passion, yellow for happiness, green for calm or balance. Provide only one color, lowercase.'
     ),
   summary: z
     .string()
     .describe(
-      'quick summary of the entire entry. Capitalized the first letter of the first word.'
+      'A medium-short-length summary of the journal entry in English. Capture the main events, key emotions, and context, enough to understand what happened and how the author felt. Capitalize the first letter of the first word.'
     ),
   subject: z
     .string()
     .describe(
-      'the subject of the journal entry. Capitalized the first letter of the first word.'
+      'The main subject or topic of the journal entry in English. Capitalize the first letter of the first word.'
     ),
   mood: z
     .string()
     .describe(
-      'the mood of the person who wrote the journal entry. and a emoji. Capitalized the first letter of the first word.'
+      'The overall mood of the author in English, expressed with one word and an emoji. Capitalize the first letter of the first word. Example: "Happy 😊".'
     ),
   negative: z
     .boolean()
     .describe(
-      'is the journal entry negative? (i.e. does it contain negative emotions?)'
+      'Indicates if the journal entry contains negative emotions. True for negative, false otherwise.'
     ),
   recommendation: z
     .string()
     .describe(
-      'a serie of deep recommendations based on the entry to deal with the situation to support the author. Capitalized the first letter of the first word.'
+      'A medium-short-length set of thoughtful recommendations in English to help the author cope with the situation. Include actionable advice and supportive guidance, reflecting the emotions and context described in the entry. Capitalize the first letter of the first word.'
     ),
 });

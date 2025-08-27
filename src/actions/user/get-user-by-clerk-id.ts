@@ -1,12 +1,26 @@
 'use server';
 
+import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/utils';
 
-export const getUserByClerkId = async (userId: string) => {
+export const getUserByClerkId = async (userId?: string) => {
+  const { userId: authUserId } = await auth();
+
+  if (!authUserId) {
+    throw new Error('Unauthorized: User not authenticated');
+  }
+
+  // Si se proporciona userId, verificar que coincida con el usuario autenticado
+  if (userId && userId !== authUserId) {
+    throw new Error('Unauthorized: User ID mismatch');
+  }
+
+  const userIdToUse = userId || authUserId;
+
   try {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        clerkId: userId,
+        clerkId: userIdToUse,
       },
     });
 

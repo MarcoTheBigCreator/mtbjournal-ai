@@ -1,19 +1,12 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@clerk/nextjs/server';
-import { getUserByClerkId } from '@/actions';
 import { prisma } from '@/utils';
+import { verifyUser } from '@/helpers/server';
 
-export async function POST(request: Request) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return NextResponse.json('Unauthorized', { status: 401 });
-  }
-
-  const user = await getUserByClerkId(userId);
-
+export async function POST() {
   try {
+    const user = await verifyUser();
+
     const createdEntry = await prisma.journalEntry.create({
       data: {
         userId: user.id,
@@ -28,10 +21,15 @@ export async function POST(request: Request) {
       },
     });
 
+    revalidatePath('/journal', 'page');
     return NextResponse.json({ data: createdEntry });
   } catch (error) {
-    return NextResponse.json(error, { status: 400 });
-  } finally {
-    revalidatePath('/journal', 'page');
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return NextResponse.json(
+      { error: 'Failed to create entry' },
+      { status: 500 }
+    );
   }
 }

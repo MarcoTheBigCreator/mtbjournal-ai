@@ -1,8 +1,7 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
-import { prisma } from '@/utils';
-import { getUserByClerkId } from '../user/get-user-by-clerk-id';
+import { prisma, paginationSchema } from '@/utils';
+import { getDbUser } from '@/helpers/server';
 
 interface PaginationOptions {
   page?: number;
@@ -13,24 +12,16 @@ export const getEntriesByUserIdPaginated = async ({
   page = 1,
   take = 11,
 }: Omit<PaginationOptions, 'userId'>) => {
-  const { userId: clerkUserId } = await auth();
-
-  if (!clerkUserId) {
-    throw new Error('Unauthorized: User not authenticated');
-  }
-
-  const user = await getUserByClerkId(clerkUserId);
-
-  if (isNaN(Number(page))) page = 1;
-  if (isNaN(Number(take))) take = 11;
-  if (page < 1) page = 1;
-
   try {
+    const { dbUser } = await getDbUser();
+
+    const validatedParams = paginationSchema.parse({ page, take });
+
     const entries = await prisma.journalEntry.findMany({
-      take,
-      skip: (page - 1) * take,
+      take: validatedParams.take,
+      skip: (validatedParams.page - 1) * validatedParams.take,
       where: {
-        userId: user.id,
+        userId: dbUser.id,
       },
       orderBy: {
         updatedAt: 'desc',
@@ -42,17 +33,24 @@ export const getEntriesByUserIdPaginated = async ({
 
     const totalEntriesCount = await prisma.journalEntry.count({
       where: {
-        userId: user.id,
+        userId: dbUser.id,
       },
     });
 
-    const totalPages = Math.ceil(totalEntriesCount / take);
+    const totalPages = Math.ceil(totalEntriesCount / validatedParams.take);
 
     return {
       totalPages,
       entries,
     };
   } catch (error) {
-    throw new Error('Error fetching entries' + error);
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      throw new Error('Unauthorized: User not authenticated');
+    }
+    throw new Error(
+      `Error fetching entries: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
+    );
   }
 };

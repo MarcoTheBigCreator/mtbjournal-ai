@@ -4,19 +4,19 @@ import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/utils';
 
 export const getUserByClerkId = async (userId?: string) => {
-  const { userId: authUserId } = await auth();
-
-  if (!authUserId) {
-    throw new Error('Unauthorized: User not authenticated');
-  }
-
-  if (userId && userId !== authUserId) {
-    throw new Error('Unauthorized: User ID mismatch');
-  }
-
-  const userIdToUse = userId || authUserId;
-
   try {
+    const { userId: authUserId } = await auth();
+
+    if (!authUserId) {
+      throw new Error('Unauthorized: User not authenticated');
+    }
+
+    if (userId && userId !== authUserId) {
+      throw new Error('Unauthorized: User ID mismatch');
+    }
+
+    const userIdToUse = userId || authUserId;
+
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         clerkId: userIdToUse,
@@ -25,6 +25,9 @@ export const getUserByClerkId = async (userId?: string) => {
 
     return user;
   } catch (error) {
-    throw new Error('Error fetching user' + error);
+    if (error instanceof Error && error.message.includes('Unauthorized')) {
+      throw error; // Re-throw auth errors as-is
+    }
+    throw new Error(`Error fetching user: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 };

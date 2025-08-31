@@ -1,31 +1,34 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@clerk/nextjs/server';
-import { getUserByClerkId } from '@/actions';
-import { analyze, prisma } from '@/utils';
+import {
+  analyzeJournalEntry,
+  prisma,
+  journalEntrySchema,
+  paramsSchema,
+} from '@/utils';
+import { verifyUser } from '@/helpers/server';
 
 interface JournalRouteProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function PATCH(request: Request, { params }: JournalRouteProps) {
-  const { content } = await request.json();
-  const { userId } = await auth();
-
-  if (!userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const user = await getUserByClerkId(userId);
+  const resolvedParams = await params;
 
   try {
+    const user = await verifyUser();
+    const { content } = await request.json();
+
+    journalEntrySchema.parse({ content });
+    paramsSchema.parse(resolvedParams);
+
     const updatedEntry = await prisma.journalEntry.update({
       where: {
         userId_id: {
           userId: user.id,
-          id: params.id,
+          id: resolvedParams.id,
         },
       },
       data: { content },
@@ -33,14 +36,15 @@ export async function PATCH(request: Request, { params }: JournalRouteProps) {
 
     let updatedAiAnalysis;
     try {
-      updatedAiAnalysis = await prisma.aiAnalysis.update({
-        where: {
-          journalEntryId: updatedEntry.id,
-        },
-        data: {
-          ...(await analyze(updatedEntry.content)),
-        },
-      });
+      const analysisResult = await analyzeJournalEntry(updatedEntry.content);
+      if (analysisResult) {
+        updatedAiAnalysis = await prisma.aiAnalysis.update({
+          where: {
+            journalEntryId: updatedEntry.id,
+          },
+          data: analysisResult,
+        });
+      }
     } catch (analyzeError) {
       console.warn(
         `Error analyzing journal entry ${updatedEntry.id}:`,
@@ -53,38 +57,55 @@ export async function PATCH(request: Request, { params }: JournalRouteProps) {
       data: { ...updatedEntry, aiAnalysis: updatedAiAnalysis },
     });
   } catch (error) {
-    return NextResponse.json(error, { status: 400 });
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (error instanceof Error && error.name === 'ZodError') {
+      return NextResponse.json(
+        { error: 'Invalid data provided' },
+        { status: 400 }
+      );
+    }
+    return NextResponse.json(
+      { error: 'Failed to update entry' },
+      { status: 500 }
+    );
   } finally {
     revalidatePath('/journal', 'page');
-    revalidatePath(`/journal/${params.id}`, 'page');
+    revalidatePath(`/journal/${resolvedParams.id}`, 'page');
   }
 }
 
 export async function DELETE(request: Request, { params }: JournalRouteProps) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const user = await getUserByClerkId(userId);
-
   try {
+    const user = await verifyUser();
+    const resolvedParams = await params;
+
+    paramsSchema.parse(resolvedParams);
+
     await prisma.journalEntry.delete({
       where: {
         userId_id: {
           userId: user.id,
-          id: params.id,
+          id: resolvedParams.id,
         },
       },
     });
 
+    revalidatePath('/journal', 'page');
     return NextResponse.json({
-      data: `Entry with id ${params.id} deleted and user ${user.id}`,
+      data: `Entry with id ${resolvedParams.id} deleted successfully`,
     });
   } catch (error) {
-    return NextResponse.json(error, { status: 400 });
-  } finally {
-    revalidatePath('/journal', 'page');
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (error instanceof Error && error.name === 'ZodError') {
+      return NextResponse.json({ error: 'Invalid entry ID' }, { status: 400 });
+    }
+    return NextResponse.json(
+      { error: 'Failed to delete entry' },
+      { status: 500 }
+    );
   }
 }

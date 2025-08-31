@@ -1,21 +1,15 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@clerk/nextjs/server';
-import { getUserByClerkId } from '@/actions';
-import { prisma, askQuestionAboutEntries } from '@/utils';
+import { prisma, askQuestionAboutEntries, questionSchema } from '@/utils';
+import { verifyUser } from '@/helpers/server';
 
 export async function POST(request: Request) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const user = await getUserByClerkId(userId);
-
-  const { question } = await request.json();
-
   try {
+    const user = await verifyUser();
+    const { question } = await request.json();
+
+    questionSchema.parse({ question });
+
     const entries = await prisma.journalEntry.findMany({
       where: {
         userId: user.id,
@@ -30,12 +24,30 @@ export async function POST(request: Request) {
       },
     });
 
+    if (entries.length === 0) {
+      return NextResponse.json({
+        data: null,
+        message: 'No journal entries found',
+      });
+    }
+
     const answer = await askQuestionAboutEntries(question, entries);
 
+    revalidatePath('/journal', 'page');
     return NextResponse.json({ data: answer });
   } catch (error) {
-    return NextResponse.json(error, { status: 400 });
-  } finally {
-    revalidatePath('/journal', 'page');
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (error instanceof Error && error.name === 'ZodError') {
+      return NextResponse.json(
+        { error: 'Question cannot be empty' },
+        { status: 400 }
+      );
+    }
+    return NextResponse.json(
+      { error: 'Failed to process question' },
+      { status: 500 }
+    );
   }
 }

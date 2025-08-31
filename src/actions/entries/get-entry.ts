@@ -1,23 +1,19 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
-import { prisma } from '@/utils';
-import { getUserByClerkId } from '../user/get-user-by-clerk-id';
+import { prisma, paramsSchema } from '@/utils';
+import { getDbUser } from '@/helpers/server';
 
 export const getEntry = async (entryId: string) => {
-  const { userId: clerkUserId } = await auth();
-
-  if (!clerkUserId) {
-    throw new Error('Unauthorized: User not authenticated');
-  }
-
-  const user = await getUserByClerkId(clerkUserId);
-
   try {
+    const { dbUser } = await getDbUser();
+
+    // Simple validation
+    paramsSchema.parse({ id: entryId });
+
     const entry = await prisma.journalEntry.findUnique({
       where: {
         userId_id: {
-          userId: user.id,
+          userId: dbUser.id,
           id: entryId,
         },
       },
@@ -27,13 +23,21 @@ export const getEntry = async (entryId: string) => {
     });
 
     if (!entry) {
-      throw new Error(
-        'Entry not found with the given id' + entryId + ' and userId' + user.id
-      );
+      throw new Error(`Entry not found with id: ${entryId}`);
     }
 
     return entry;
   } catch (error) {
-    throw new Error('Unable to get entry' + error);
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      throw new Error('Unauthorized: User not authenticated');
+    }
+    if (error instanceof Error && error.name === 'ZodError') {
+      throw new Error('Invalid entry ID format');
+    }
+    throw new Error(
+      `Unable to get entry: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
+    );
   }
 };

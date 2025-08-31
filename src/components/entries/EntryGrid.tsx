@@ -1,3 +1,4 @@
+import { Entry } from '@/types';
 import { EntryCard } from './EntryCard';
 import { NewEntryCard } from './NewEntryCard';
 

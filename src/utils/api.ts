@@ -1,3 +1,4 @@
+import { AiAnalysis, AiAnswer } from '@/types';
 import { JournalEntry } from '@prisma/client';
 
 const createUrl = (path: string) => {

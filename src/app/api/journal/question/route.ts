@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { auth } from '@clerk/nextjs/server';
 import { getUserByClerkId } from '@/actions';
-import { prisma, questionAndAnswer } from '@/utils';
+import { prisma, askQuestionAboutEntries } from '@/utils';
 
 export async function POST(request: Request) {
   const { userId } = await auth();
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const answer = await questionAndAnswer(question, entries);
+    const answer = await askQuestionAboutEntries(question, entries);
 
     return NextResponse.json({ data: answer });
   } catch (error) {

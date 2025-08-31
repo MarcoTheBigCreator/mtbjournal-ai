@@ -7,6 +7,7 @@ import { deleteEntry, getColorClasses } from '@/utils';
 import styles from './Analysis.module.css';
 import { Trash2 } from 'lucide-react';
 import { Button } from '../Button';
+import { AiAnalysis, Entry } from '@/types';
 
 interface AnalysisProps {
   aiAnalysis: AiAnalysis;

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { dateFormatter } from '@/utils';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/Card';
+import { Entry } from '@/types';
 
 interface EntryCardProps {
   entry: Entry;

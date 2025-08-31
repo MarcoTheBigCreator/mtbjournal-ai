@@ -1,4 +1,4 @@
-interface Entry {
+export interface Entry {
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -7,7 +7,7 @@ interface Entry {
   aiAnalysis?: AiAnalysis | null;
 }
 
-interface EntryAnalysis {
+export interface EntryAnalysis {
   color: string;
   summary: string;
   subject: string;
@@ -16,7 +16,7 @@ interface EntryAnalysis {
   recommendation: string;
 }
 
-interface AiAnalysis extends EntryAnalysis {
+export interface AiAnalysis extends EntryAnalysis {
   id: string;
   createdAt: Date;
   updatedAt: Date;

@@ -1,14 +1,14 @@
-interface AiAnswer {
+export interface AiAnswer {
   answer: string;
   sources: AiSource[];
 }
 
-interface AiSource {
+export interface AiSource {
   id: string;
   updatedAt: Date;
 }
 
-interface EntrySource {
+export interface EntrySource {
   id: string;
   content: string;
   updatedAt: Date;

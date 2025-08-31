@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { titleFont } from '@/config';
 import { VanishInput } from '../ui/VanishInput';
-import { PLACEHOLDERS } from '../../constants/aiEntrySearch';
+import { SEARCH_PLACEHOLDERS } from '../../constants/searchPlaceholders';
 import { askQuestion } from '@/utils';
 import AiResponseDisplay from './AiResponseDisplay';
 
@@ -49,7 +49,7 @@ export const AiEntrySearch = () => {
           Ask your MTBJournal
         </h2>
         <VanishInput
-          placeholders={PLACEHOLDERS}
+          placeholders={SEARCH_PLACEHOLDERS}
           onChange={onChange}
           onSubmit={handleSubmit}
         />

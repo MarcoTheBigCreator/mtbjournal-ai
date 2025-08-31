@@ -8,6 +8,7 @@ import { Loader2, CheckCircle, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib';
 import { titleFont } from '@/config';
 import { Analysis } from '../ui/analysis/Analysis';
+import { Entry } from '@/types';
 
 interface EditorProps {
   entry: Entry;

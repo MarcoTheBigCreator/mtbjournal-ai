@@ -7,15 +7,18 @@ interface Entry {
   aiAnalysis?: AiAnalysis | null;
 }
 
-interface AiAnalysis {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  journalEntryId: string;
+interface EntryAnalysis {
   color: string;
   summary: string;
   subject: string;
   mood: string;
   negative: boolean;
   recommendation: string;
+}
+
+interface AiAnalysis extends EntryAnalysis {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  journalEntryId: string;
 }

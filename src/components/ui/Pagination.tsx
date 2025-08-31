@@ -47,7 +47,7 @@ export const Pagination = ({ totalPages }: Props) => {
           <ul className="flex items-center space-x-1">
             <li>
               <Link
-                className="relative flex items-center justify-center w-10 h-10 rounded-full text-violet-300 hover:bg-violet-700 hover:bg-opacity-20 transition-all duration-300"
+                className="relative flex items-center justify-center w-10 h-10 rounded-full text-violet-300 hover:bg-violet-700 transition-all duration-300"
                 href={createPageUrl(currentPage - 1)}
                 aria-label="Previous page"
               >
@@ -59,9 +59,9 @@ export const Pagination = ({ totalPages }: Props) => {
               <li key={page + '-' + index}>
                 <Link
                   className={cn(
-                    'relative flex items-center justify-center w-10 h-10 rounded-full text-violet-100 hover:bg-violet-700 hover:bg-opacity-20 transition-all duration-300',
+                    'relative flex items-center justify-center w-10 h-10 rounded-full text-violet-100 hover:bg-violet-700 transition-all duration-300',
                     {
-                      'bg-violet-700 bg-opacity-50 text-white shadow-lg':
+                      'bg-neutral-700 text-white shadow-lg':
                         page === currentPage,
                     }
                   )}
@@ -74,7 +74,7 @@ export const Pagination = ({ totalPages }: Props) => {
 
             <li>
               <Link
-                className="relative flex items-center justify-center w-10 h-10 rounded-full text-violet-300 hover:bg-violet-700 hover:bg-opacity-20 transition-all duration-300"
+                className="relative flex items-center justify-center w-10 h-10 rounded-full text-violet-300 hover:bg-violet-700 transition-all duration-300"
                 href={createPageUrl(currentPage + 1)}
                 aria-label="Next page"
               >

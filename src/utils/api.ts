@@ -67,3 +67,25 @@ export const deleteEntry = async (id: string): Promise<{ data: string }> => {
     throw new Error('Unable to delete entry: ' + error);
   }
 };
+
+export const askQuestion = async (
+  question: string
+): Promise<AiAnswer | null> => {
+  try {
+    const res = await fetch(
+      new Request(createUrl('/api/journal/question'), {
+        method: 'POST',
+        body: JSON.stringify({ question }),
+      })
+    );
+
+    if (!res.ok) {
+      throw new Error('Failed to get answer to the question');
+    }
+
+    const data = await res.json();
+    return data.data;
+  } catch (error) {
+    throw new Error('Unable to get answer: ' + error);
+  }
+};

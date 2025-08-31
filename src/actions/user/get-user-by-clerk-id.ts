@@ -10,7 +10,6 @@ export const getUserByClerkId = async (userId?: string) => {
     throw new Error('Unauthorized: User not authenticated');
   }
 
-  // Si se proporciona userId, verificar que coincida con el usuario autenticado
   if (userId && userId !== authUserId) {
     throw new Error('Unauthorized: User ID mismatch');
   }

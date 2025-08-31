@@ -1,36 +1,61 @@
 'use client';
 
+import { useState } from 'react';
 import { titleFont } from '@/config';
 import { VanishInput } from '../ui/VanishInput';
+import { PLACEHOLDERS } from '../../constants/aiEntrySearch';
+import { askQuestion } from '@/utils';
+import AiResponseDisplay from './AiResponseDisplay';
 
 export const AiEntrySearch = () => {
-  const placeholders = [
-    'How was my week?',
-    'What did I learn today?',
-    'What am I grateful for?',
-    'What was my mood the last few days?',
-  ];
+  const [inputValue, setInputValue] = useState('');
+  const [aiResponse, setAiResponse] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(e.currentTarget.value, 'submitted');
+    if (!inputValue.trim()) return;
+
+    setIsLoading(true);
+    setAiResponse(null);
+
+    try {
+      const aiAnswer = await askQuestion(inputValue);
+      if (!aiAnswer) {
+        setAiResponse(null);
+      } else {
+        setAiResponse(aiAnswer.answer);
+      }
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      setAiResponse(
+        'Sorry, I encountered an error while processing your question. Please try again.'
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <>
-      <h2
-        className={`${titleFont.className} mb-10 text-xl text-center sm:text-4xl dark:text-white text-black`}
-      >
-        Ask your MTBJournal
-      </h2>
-      <VanishInput
-        placeholders={placeholders}
-        onChange={handleChange}
-        onSubmit={onSubmit}
-      />
-    </>
+    <div className="w-full max-w-6xl mx-auto space-y-8">
+      <div>
+        <h2
+          className={`${titleFont.className} mb-10 text-xl text-center sm:text-4xl dark:text-white text-black`}
+        >
+          Ask your MTBJournal
+        </h2>
+        <VanishInput
+          placeholders={PLACEHOLDERS}
+          onChange={onChange}
+          onSubmit={handleSubmit}
+        />
+      </div>
+
+      <AiResponseDisplay response={aiResponse} isLoading={isLoading} />
+    </div>
   );
 };

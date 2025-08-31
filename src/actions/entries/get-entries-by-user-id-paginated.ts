@@ -26,7 +26,6 @@ export const getEntriesByUserIdPaginated = async ({
   if (page < 1) page = 1;
 
   try {
-    // Get entries by user id
     const entries = await prisma.journalEntry.findMany({
       take,
       skip: (page - 1) * take,
@@ -41,17 +40,14 @@ export const getEntriesByUserIdPaginated = async ({
       },
     });
 
-    // Get total entries count
     const totalEntriesCount = await prisma.journalEntry.count({
       where: {
         userId: user.id,
       },
     });
 
-    // Calculate total pages
     const totalPages = Math.ceil(totalEntriesCount / take);
 
-    // Return total pages and entries
     return {
       totalPages,
       entries,

@@ -1,5 +1,6 @@
 export { LogoWithText, LogoIcon } from './logos/Logo';
 export * from './ai-search/AiEntrySearch';
+export { default as AiResponseDisplay } from './ai-search/AiResponseDisplay';
 export * from './editor/Editor';
 export * from './entries/EntryCard';
 export * from './entries/EntryGrid';
@@ -13,3 +14,5 @@ export * from './ui/Sidebar';
 export * from './ui/SideMenu';
 export * from './ui/VanishInput';
 export * from './ui/Vortex';
+export * from './ui/AnimatedText';
+export * from './ui/ShimmerPlaceholder';

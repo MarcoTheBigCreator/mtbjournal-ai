@@ -4,14 +4,14 @@ import { Editor } from '@/components';
 import { getEntry } from '@/actions';
 
 interface EntryPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function EntryPage({ params }: EntryPageProps) {
   const { userId } = await auth();
-  const { id } = params;
+  const { id } = await params;
 
   if (!userId) {
     redirect('/sign-in');

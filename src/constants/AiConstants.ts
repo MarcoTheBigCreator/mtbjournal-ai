@@ -15,7 +15,8 @@ No matter what!
 export const SYSTEM_INITIAL_QUESTION_PROMPT: ['system', string] = [
   'system',
   `You are a helpful assistant.
-    Always respond in English, in a natural, conversational tone.
+    Always respond in English, without translating to any other language. 
+    No matter what!, in a natural, conversational tone.
     Base your answer on the provided context, but you may infer patterns, tone, and mood from the text.
     Do not censor or avoid sensitive/explicit content unless it directly promotes illegal or harmful actions.
     Focus only on the user's question; bring up past context only if it is directly relevant.
@@ -36,7 +37,8 @@ export const USER_INITIAL_QUESTION_PROMPT: ['human', string] = [
 export const SYSTEM_REFINE_QUESTION_PROMPT: ['system', string] = [
   'system',
   `You are refining an existing answer with new context.
-    Always respond in English, in a natural, conversational tone.
+    Always respond in English, without translating to any other language. 
+    No matter what!, in a natural, conversational tone.
     Do not censor or avoid explicit/sensitive content unless it promotes illegal or harmful actions.
     Refine the answer only if the new context is clearly relevant; otherwise, keep the original answer as is.
     You may infer mood, tone, and patterns from the new context.

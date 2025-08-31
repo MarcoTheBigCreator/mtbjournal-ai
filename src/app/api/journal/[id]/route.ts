@@ -14,6 +14,12 @@ interface JournalRouteProps {
   }>;
 }
 
+/**
+ * Updates a journal entry.
+ * @param {Request} request The request object.
+ * @param {JournalRouteProps} params The route parameters.
+ * @returns {Promise<NextResponse>} The response object.
+ */
 export async function PATCH(request: Request, { params }: JournalRouteProps) {
   const resolvedParams = await params;
 
@@ -76,6 +82,12 @@ export async function PATCH(request: Request, { params }: JournalRouteProps) {
   }
 }
 
+/**
+ * Deletes a journal entry.
+ * @param {Request} request The request object.
+ * @param {JournalRouteProps} params The route parameters.
+ * @returns {Promise<NextResponse>} The response object.
+ */
 export async function DELETE(request: Request, { params }: JournalRouteProps) {
   try {
     const user = await verifyUser();

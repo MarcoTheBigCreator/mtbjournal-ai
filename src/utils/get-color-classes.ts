@@ -1,4 +1,9 @@
-export const getColorClasses = (color: string) => {
+/**
+ * Gets the color classes for a given color.
+ * @param {string} color The color to get classes for.
+ * @returns {Record<string, string>} The color classes.
+ */
+export const getColorClasses = (color: string): Record<string, string> => {
   const baseColors: Record<
     string,
     { bg: string; text: string; border: string }

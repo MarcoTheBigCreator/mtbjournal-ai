@@ -3,6 +3,11 @@ import { revalidatePath } from 'next/cache';
 import { prisma, askQuestionAboutEntries, questionSchema } from '@/utils';
 import { verifyUser } from '@/helpers/server';
 
+/**
+ * Handles the POST request for asking a question about journal entries.
+ * @param request The request object.
+ * @returns A promise that resolves to the response object.
+ */
 export async function POST(request: Request) {
   try {
     const user = await verifyUser();

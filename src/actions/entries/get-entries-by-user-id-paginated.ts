@@ -8,6 +8,11 @@ interface PaginationOptions {
   take?: number;
 }
 
+/**
+ * Retrieves journal entries for a specific user with pagination.
+ * @param {PaginationOptions} options The pagination options.
+ * @returns {Promise<{ totalPages: number; entries: JournalEntry[] }>} The paginated journal entries.
+ */
 export const getEntriesByUserIdPaginated = async ({
   page = 1,
   take = 11,

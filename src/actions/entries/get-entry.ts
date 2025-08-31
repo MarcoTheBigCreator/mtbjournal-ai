@@ -2,12 +2,17 @@
 
 import { prisma, paramsSchema } from '@/utils';
 import { getDbUser } from '@/helpers/server';
+import { Entry } from '@/types';
 
-export const getEntry = async (entryId: string) => {
+/**
+ * Retrieves a journal entry by its ID.
+ * @param {string} entryId The ID of the journal entry.
+ * @returns {Promise<Entry>} The journal entry, or null if not found.
+ */
+export const getEntry = async (entryId: string): Promise<Entry> => {
   try {
     const { dbUser } = await getDbUser();
 
-    // Simple validation
     paramsSchema.parse({ id: entryId });
 
     const entry = await prisma.journalEntry.findUnique({

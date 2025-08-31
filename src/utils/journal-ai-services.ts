@@ -22,19 +22,43 @@ import {
 import { AiAnswer, EntryAnalysis, EntrySource } from '@/types';
 import { truncateText } from './text-utils';
 
+/**
+ * Parses the structured output from the AI.
+ */
 const structuredOutputParser =
   StructuredOutputParser.fromZodSchema(aiOutputSchema);
 
+/**
+ * The size of each document batch for processing.
+ */
 const DOCUMENT_BATCH_SIZE = MIN_FILTERED_DOCUMENTS;
 
+/**
+ * The separator to use between document contexts.
+ */
 const CONTEXT_SEPARATOR = '\n\n';
 
+/**
+ * Helper function that formats a document for context in the AI prompt.
+ * @param {Document} document The document to format.
+ * @returns {string} The formatted document string.
+ */
 const formatDocumentForContext = (document: Document): string =>
   `Note (updated: ${document.metadata.updatedAt}):\n${document.pageContent}`;
 
+/**
+ * Helper function that truncates text to the maximum word limit.
+ * @param {string} text The text to truncate.
+ * @returns {string} The truncated text.
+ */
 const truncateToMaxWords = (text: string): string =>
   truncateText(text, MAX_WORDS);
 
+/**
+ * Builds the analysis prompt for the AI.
+ * @param {string} entryContent The content of the journal entry.
+ * @returns {Promise<string>} The formatted analysis prompt.
+ */
 const buildAnalysisPrompt = async (entryContent: string): Promise<string> => {
   const formatInstructions = structuredOutputParser.getFormatInstructions();
 
@@ -51,6 +75,11 @@ const buildAnalysisPrompt = async (entryContent: string): Promise<string> => {
   return formattedPrompt;
 };
 
+/**
+ * Analyzes a journal entry using the AI.
+ * @param {string} entryContent The content of the journal entry.
+ * @returns {Promise<EntryAnalysis | undefined>} The analysis result or undefined.
+ */
 export const analyzeJournalEntry = async (
   entryContent: string
 ): Promise<EntryAnalysis | undefined> => {
@@ -76,28 +105,45 @@ export const analyzeJournalEntry = async (
   }
 };
 
+/**
+ * The initial question prompt for the AI.
+ */
 const initialQuestionPrompt = ChatPromptTemplate.fromMessages([
   SYSTEM_INITIAL_QUESTION_PROMPT,
   USER_INITIAL_QUESTION_PROMPT,
 ]);
 
+/**
+ * The prompt for refining the AI's answer.
+ */
 const refineAnswerPrompt = ChatPromptTemplate.fromMessages([
   SYSTEM_REFINE_QUESTION_PROMPT,
   USER_REFINE_QUESTION_PROMPT,
 ]);
 
+/**
+ * The initial answer prompt for the AI.
+ */
 const initialAnswerChain = RunnableSequence.from([
   initialQuestionPrompt,
   MODEL_OPENAI,
   new StringOutputParser(),
 ]);
 
+/**
+ * The prompt for refining the AI's answer.
+ */
 const refineAnswerChain = RunnableSequence.from([
   refineAnswerPrompt,
   MODEL_OPENAI,
   new StringOutputParser(),
 ]);
 
+/**
+ * Creates document objects from journal entry sources.
+ * @param {EntrySource[]} entries The journal entry sources.
+ * @returns {Document[]} The created document objects.
+ */
 const createDocumentsFromEntries = (entries: EntrySource[]): Document[] => {
   const documents = entries.map((entry) => {
     return new Document({
@@ -109,6 +155,12 @@ const createDocumentsFromEntries = (entries: EntrySource[]): Document[] => {
   return documents;
 };
 
+/**
+ * Asks a question about the journal entries.
+ * @param {string} question The question to ask.
+ * @param {EntrySource[]} entries The journal entry sources.
+ * @returns {Promise<AiAnswer | null>} The AI's answer or null.
+ */
 export const askQuestionAboutEntries = async (
   question: string,
   entries: EntrySource[]

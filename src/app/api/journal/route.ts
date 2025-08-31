@@ -3,6 +3,10 @@ import { revalidatePath } from 'next/cache';
 import { prisma } from '@/utils';
 import { verifyUser } from '@/helpers/server';
 
+/**
+ * Handles the POST request for creating a journal entry.
+ * @returns A promise that resolves to the response object.
+ */
 export async function POST() {
   try {
     const user = await verifyUser();

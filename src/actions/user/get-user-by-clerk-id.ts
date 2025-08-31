@@ -2,8 +2,14 @@
 
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/utils';
+import { User } from '@prisma/client';
 
-export const getUserByClerkId = async (userId?: string) => {
+/**
+ * Retrieves a user by their Clerk ID.
+ * @param {string} userId The Clerk ID of the user.
+ * @returns {Promise<User>} The user object, or null if not found.
+ */
+export const getUserByClerkId = async (userId?: string): Promise<User> => {
   try {
     const { userId: authUserId } = await auth();
 
@@ -26,8 +32,12 @@ export const getUserByClerkId = async (userId?: string) => {
     return user;
   } catch (error) {
     if (error instanceof Error && error.message.includes('Unauthorized')) {
-      throw error; // Re-throw auth errors as-is
+      throw error;
     }
-    throw new Error(`Error fetching user: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Error fetching user: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
+    );
   }
 };

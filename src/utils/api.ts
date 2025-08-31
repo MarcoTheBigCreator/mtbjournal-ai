@@ -1,10 +1,21 @@
 import { AiAnalysis, AiAnswer } from '@/types';
 import { JournalEntry } from '@prisma/client';
 
-const createUrl = (path: string) => {
+/**
+ * Creates a full URL for the given path.
+ * @param {string} path The path to append to the origin.
+ * @returns {string} The full URL as a string.
+ */
+const createUrl = (path: string): string => {
   return window.location.origin + path;
 };
 
+/**
+ * Updates an existing journal entry.
+ * @param {string} id The ID of the journal entry to update.
+ * @param {string} content The new content for the journal entry.
+ * @returns {Promise<JournalEntry & { aiAnalysis?: AiAnalysis | null }>} The updated journal entry.
+ */
 export const updateEntry = async (
   id: string,
   content: string
@@ -31,6 +42,10 @@ export const updateEntry = async (
   }
 };
 
+/**
+ * Creates a new journal entry.
+ * @returns {Promise<JournalEntry>} The created journal entry.
+ */
 export const createNewEntry = async (): Promise<JournalEntry> => {
   try {
     const res = await fetch(
@@ -50,6 +65,11 @@ export const createNewEntry = async (): Promise<JournalEntry> => {
   }
 };
 
+/**
+ * Deletes a journal entry.
+ * @param {string} id The ID of the journal entry to delete.
+ * @returns {Promise<{ data: string }>} The result of the delete operation.
+ */
 export const deleteEntry = async (id: string): Promise<{ data: string }> => {
   try {
     const res = await fetch(
@@ -69,6 +89,11 @@ export const deleteEntry = async (id: string): Promise<{ data: string }> => {
   }
 };
 
+/**
+ * Asks a question to the AI.
+ * @param {string} question The question to ask.
+ * @returns {Promise<AiAnswer | null>} The AI's answer or null if not available.
+ */
 export const askQuestion = async (
   question: string
 ): Promise<AiAnswer | null> => {

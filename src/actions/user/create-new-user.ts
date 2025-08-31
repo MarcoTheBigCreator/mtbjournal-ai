@@ -4,7 +4,11 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/utils';
 import { verifyUserServerAction } from '@/helpers/server';
 
-export const createNewUser = async () => {
+/**
+ * Creates a new user in the database.
+ * @returns {Promise<void>} A promise that resolves when the user is created.
+ */
+export const createNewUser = async (): Promise<void> => {
   try {
     const user = await verifyUserServerAction();
 

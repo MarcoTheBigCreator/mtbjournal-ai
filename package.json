@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "npm run prisma:deploy && next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:deploy": "npx prisma migrate deploy && npx prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.31.4",

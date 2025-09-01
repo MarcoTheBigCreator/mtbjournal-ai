@@ -2,6 +2,36 @@ import { getEntriesSentimentScore } from '@/actions/entries/get-entries-sentimen
 import { verifyAuth } from '@/helpers/auth-helpers';
 import { MoodChart, MoodStats } from '@/components';
 import { titleFont } from '@/config';
+import { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Mood Chart',
+    description:
+      'Welcome to your mood chart. Here you can explore your emotional journey and track your mental health.',
+    applicationName: 'MTBJournal',
+    metadataBase: new URL('https://mtbjournal.vercel.app/journal'),
+    openGraph: {
+      title: 'Mood Chart',
+      description:
+        'Welcome to your mood chart. Here you can explore your emotional journey and track your mental health.',
+      url: 'https://mtbjournal.vercel.app/journal',
+      siteName: 'MTBJournal',
+      type: 'website',
+      images: [
+        `https://res.cloudinary.com/dmlpgks2h/image/upload/v1756705809/Portfolio/mtbjournal-chart_nbpvxe.png`,
+      ],
+    },
+    twitter: {
+      title: 'Mood Chart',
+      description:
+        'Welcome to your mood chart. Here you can explore your emotional journey and track your mental health.',
+      images: [
+        `https://res.cloudinary.com/dmlpgks2h/image/upload/v1756705809/Portfolio/mtbjournal-chart_nbpvxe.png`,
+      ],
+    },
+  };
+}
 
 export default async function AiMoodChartPage() {
   await verifyAuth();

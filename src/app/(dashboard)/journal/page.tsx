@@ -2,11 +2,41 @@ import { getEntriesByUserIdPaginated } from '@/actions';
 import { titleFont } from '@/config';
 import { EntryGrid, Pagination } from '@/components';
 import { verifyAuth } from '@/helpers/auth-helpers';
+import { Metadata } from 'next';
 
 interface JournalSearchParamsProps {
   searchParams: Promise<{
     page?: string;
   }>;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Dashboard',
+    description:
+      'Welcome to your journal dashboard. Here you can track your emotions and monitor your mental health.',
+    applicationName: 'MTBJournal',
+    metadataBase: new URL('https://mtbjournal.vercel.app/journal'),
+    openGraph: {
+      title: 'Dashboard',
+      description:
+        'Welcome to your journal dashboard. Here you can track your emotions and monitor your mental health.',
+      url: 'https://mtbjournal.vercel.app/journal',
+      siteName: 'MTBJournal',
+      type: 'website',
+      images: [
+        `https://res.cloudinary.com/dmlpgks2h/image/upload/v1756705651/Portfolio/mtbjournal-dashboard_i9nxgp.png`,
+      ],
+    },
+    twitter: {
+      title: 'Dashboard',
+      description:
+        'Welcome to your journal dashboard. Here you can track your emotions and monitor your mental health.',
+      images: [
+        `https://res.cloudinary.com/dmlpgks2h/image/upload/v1756705651/Portfolio/mtbjournal-dashboard_i9nxgp.png`,
+      ],
+    },
+  };
 }
 
 export default async function JournalPage({

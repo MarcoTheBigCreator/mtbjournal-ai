@@ -9,6 +9,7 @@ import { ShimmerPlaceholder } from '../ui/ShimmerPlaceholder';
 interface AiResponseDisplayProps {
   response: string | null;
   isLoading: boolean;
+  question?: string;
   className?: string;
 }
 
@@ -57,11 +58,12 @@ const TypewriterText = ({ text }: { text: string }) => {
   );
 };
 
-export default function AiResponseDisplay({
+export const AiResponseDisplay = ({
   response,
   isLoading,
+  question,
   className,
-}: AiResponseDisplayProps) {
+}: AiResponseDisplayProps) => {
   if (!isLoading && !response) {
     return null;
   }
@@ -100,6 +102,24 @@ export default function AiResponseDisplay({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
         >
+          {question && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="mb-6 pb-4 border-b border-neutral-200 dark:border-neutral-700"
+            >
+              <div className="flex items-center space-x-2 mb-3">
+                <div className="w-2 h-2 bg-violet-500 rounded-full" />
+                <span className="text-sm font-medium text-neutral-600 dark:text-neutral-300">
+                  Your Question
+                </span>
+              </div>
+              <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                {question}
+              </p>
+            </motion.div>
+          )}
           <div className="flex items-center space-x-2 mb-4">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className="text-sm font-medium text-neutral-600 dark:text-neutral-300">
@@ -111,4 +131,4 @@ export default function AiResponseDisplay({
       ) : null}
     </motion.div>
   );
-}
+};

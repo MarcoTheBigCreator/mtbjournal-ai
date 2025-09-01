@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { titleFont } from '@/config';
 import { motion } from 'framer-motion';
-import { Icons } from '../icons/Icons';
+import { Icons } from '../icons';
 
 export const LogoWithText = () => {
   return (

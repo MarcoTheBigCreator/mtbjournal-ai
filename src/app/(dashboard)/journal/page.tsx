@@ -1,8 +1,7 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
 import { getEntriesByUserIdPaginated } from '@/actions';
 import { titleFont } from '@/config';
 import { EntryGrid, Pagination } from '@/components';
+import { verifyAuth } from '@/helpers/auth-helpers';
 
 interface JournalSearchParamsProps {
   searchParams: Promise<{
@@ -13,11 +12,7 @@ interface JournalSearchParamsProps {
 export default async function JournalPage({
   searchParams,
 }: JournalSearchParamsProps) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return redirect('/sign-in');
-  }
+  await verifyAuth();
 
   const params = await searchParams;
   const page = params.page ? parseInt(params.page) : 1;

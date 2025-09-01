@@ -14,6 +14,7 @@ export interface EntryAnalysis {
   mood: string;
   negative: boolean;
   recommendation: string;
+  sentimentScore: number;
 }
 
 export interface AiAnalysis extends EntryAnalysis {
@@ -21,4 +22,19 @@ export interface AiAnalysis extends EntryAnalysis {
   createdAt: Date;
   updatedAt: Date;
   journalEntryId: string;
+}
+
+export interface AiMoodData {
+  aiAnalyses: {
+    color: string;
+    mood: string;
+    sentimentScore: number;
+    createdAt: Date;
+  }[];
+  sentimentInformation: {
+    averageSentimentScore: number;
+    totalNotes: number;
+    lastRecordedMood: string;
+    lastMoodColor: string;
+  };
 }

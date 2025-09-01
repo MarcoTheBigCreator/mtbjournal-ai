@@ -1,11 +1,12 @@
 export { LogoWithText, LogoIcon } from './logos/Logo';
 export * from './ai-search/AiEntrySearch';
-export { default as AiResponseDisplay } from './ai-search/AiResponseDisplay';
+export { AiResponseDisplay } from './ai-search/AiResponseDisplay';
 export * from './editor/Editor';
 export * from './entries/EntryCard';
 export * from './entries/EntryGrid';
 export * from './entries/NewEntryCard';
 export * from './icons/Icons';
+export * from './mood-chart';
 export * from './ui/analysis/Analysis';
 export * from './ui/Button';
 export * from './ui/Card';

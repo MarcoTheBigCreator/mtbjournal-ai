@@ -43,6 +43,7 @@ model AiAnalysis {
   mood           String       @default("N/A")
   negative       Boolean      @default(false)
   recommendation String       @default("N/A") @db.Text
+  sentimentScore Float        @default(0)
 
   @@unique([journalEntryId])
 }

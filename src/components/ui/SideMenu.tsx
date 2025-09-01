@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { UserButton } from '@clerk/nextjs';
 import { Sidebar, SidebarBody, SidebarLink } from './Sidebar';
-import { BrainCircuit, NotebookText } from 'lucide-react';
+import { BrainCircuit, ChartSpline, NotebookText } from 'lucide-react';
 import { LogoWithText, LogoIcon } from '../logos/Logo';
 
 export const SideMenu = () => {
@@ -20,6 +20,13 @@ export const SideMenu = () => {
       href: '/ai-search',
       icon: (
         <BrainCircuit className="text-neutral-700 dark:text-neutral-200 h-[1.35rem] w-[1.35rem] flex-shrink-0" />
+      ),
+    },
+    {
+      label: 'AI Mood Chart',
+      href: '/mood-chart',
+      icon: (
+        <ChartSpline className="text-neutral-700 dark:text-neutral-200 h-[1.35rem] w-[1.35rem] flex-shrink-0" />
       ),
     },
   ];

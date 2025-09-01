@@ -5,7 +5,7 @@ import { titleFont } from '@/config';
 import { VanishInput } from '../ui/VanishInput';
 import { SEARCH_PLACEHOLDERS } from '../../constants/searchPlaceholders';
 import { askQuestion } from '@/utils';
-import AiResponseDisplay from './AiResponseDisplay';
+import { AiResponseDisplay } from '..';
 
 export const AiEntrySearch = () => {
   const [inputValue, setInputValue] = useState('');
@@ -55,7 +55,11 @@ export const AiEntrySearch = () => {
         />
       </div>
 
-      <AiResponseDisplay response={aiResponse} isLoading={isLoading} />
+      <AiResponseDisplay
+        response={aiResponse}
+        isLoading={isLoading}
+        question={inputValue}
+      />
     </div>
   );
 };

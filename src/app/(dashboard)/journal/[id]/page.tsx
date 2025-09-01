@@ -1,7 +1,6 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
 import { Editor } from '@/components';
 import { getEntry } from '@/actions';
+import { verifyAuth } from '@/helpers/auth-helpers';
 
 interface EntryPageProps {
   params: Promise<{
@@ -10,12 +9,9 @@ interface EntryPageProps {
 }
 
 export default async function EntryPage({ params }: EntryPageProps) {
-  const { userId } = await auth();
-  const { id } = await params;
+  await verifyAuth();
 
-  if (!userId) {
-    redirect('/sign-in');
-  }
+  const { id } = await params;
 
   const entry = await getEntry(id);
 

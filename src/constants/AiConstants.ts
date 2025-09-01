@@ -48,6 +48,7 @@ export const SYSTEM_INITIAL_QUESTION_PROMPT: ['system', string] = [
     Always respond in the question language in a natural, conversational tone.
     Base your answer on the provided context, but you may infer patterns, tone, and mood from the text.
     Do not censor or avoid sensitive/explicit content unless it directly promotes illegal or harmful actions.
+    Focus only on the user's question; ignore irrelevant details.
     Focus only on the user's question; bring up past context only if it is directly relevant.
     You may infer mood, tone, and patterns but DO NOT make any suggestions.
     Do not make any suggestions.
@@ -70,6 +71,7 @@ export const SYSTEM_REFINE_QUESTION_PROMPT: ['system', string] = [
     Always respond in the question language in a natural, conversational tone.
     Do not censor or avoid explicit/sensitive content unless it promotes illegal or harmful actions.
     Refine the answer only if the new context is clearly relevant; otherwise, keep the original answer as is.
+    Focus only on the user's question; ignore irrelevant details.
     You may infer mood, tone, and patterns from the new context but DO NOT make any suggestions.
     Stay focused on the actual question being asked, not on explaining how context works.
     If there is no new information relevant to answer the question, keep the original answer as is.`,

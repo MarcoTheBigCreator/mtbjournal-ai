@@ -1,11 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib';
 import { titleFont } from '@/config';
 import { deleteEntry, getColorClasses } from '@/utils';
 import styles from './Analysis.module.css';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Loader2 } from 'lucide-react';
 import { Button } from '../Button';
 import { AiAnalysis, Entry } from '@/types';
 
@@ -21,6 +22,7 @@ export const Analysis = ({
   setIsDeleting,
 }: AnalysisProps) => {
   const router = useRouter();
+  const [isDeleting, setLocalIsDeleting] = useState(false);
 
   const { color, summary, subject, mood, negative, recommendation } =
     aiAnalysis;
@@ -36,10 +38,19 @@ export const Analysis = ({
   const { bg, text, border } = getColorClasses(color);
 
   const onDeleteEntry = async () => {
+    if (isDeleting) return;
+
+    setLocalIsDeleting(true);
     setIsDeleting(true);
-    await deleteEntry(entry.id);
-    router.push(`/journal`);
-    router.refresh();
+    try {
+      await deleteEntry(entry.id);
+      router.push('/journal');
+      router.refresh();
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      setLocalIsDeleting(false);
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -93,14 +104,25 @@ export const Analysis = ({
       <div className="px-6 py-4 border-violet-300 border-opacity-30">
         <Button
           onClick={onDeleteEntry}
+          disabled={isDeleting}
           className={cn(
-            'flex items-center justify-center w-full px-4 py-2',
+            'flex items-center justify-center w-full px-4 py-2 transition-all duration-200',
             bg,
-            styles[bg]
+            styles[bg],
+            isDeleting && 'opacity-50 cursor-not-allowed'
           )}
         >
-          <Trash2 className="w-5 h-5 mr-2" />
-          Delete Journal Entry
+          {isDeleting ? (
+            <>
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              Deleting...
+            </>
+          ) : (
+            <>
+              <Trash2 className="w-5 h-5 mr-2" />
+              Delete Journal Entry
+            </>
+          )}
         </Button>
       </div>
     </div>

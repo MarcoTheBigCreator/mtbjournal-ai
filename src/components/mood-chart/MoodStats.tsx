@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 
 interface MoodStatsProps {
@@ -33,7 +32,7 @@ export const MoodStats = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
       {/* Total Notes Card */}
-      <Card className="bg-neutral-800 border-neutral-700">
+      <Card glowEffect className="bg-neutral-800 border-neutral-700">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-medium text-neutral-200">
             Total Written
@@ -48,7 +47,7 @@ export const MoodStats = ({
       </Card>
 
       {/* Last Recorded Mood Card */}
-      <Card className="bg-neutral-800 border-neutral-700">
+      <Card glowEffect className="bg-neutral-800 border-neutral-700">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-medium text-neutral-200">
             Last Recorded Mood
@@ -79,7 +78,7 @@ export const MoodStats = ({
       </Card>
 
       {/* Average Sentiment Score Card */}
-      <Card className="bg-neutral-800 border-neutral-700">
+      <Card glowEffect className="bg-neutral-800 border-neutral-700">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-medium text-neutral-200">
             Average Sentiment

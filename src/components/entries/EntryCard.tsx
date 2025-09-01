@@ -14,7 +14,10 @@ export const EntryCard = ({ entry }: EntryCardProps) => {
 
   return (
     <Link href={`/journal/${entry.id}`}>
-      <Card className="flex flex-col h-full bg-neutral-700 bg-opacity-30 backdrop-blur-md hover:bg-neutral-700/50 transition-all duration-200 border-neutral-600">
+      <Card
+        glowEffect
+        className="flex flex-col h-full bg-neutral-700 bg-opacity-30 backdrop-blur-md transition-all duration-200 border-neutral-600"
+      >
         <CardHeader>
           <h3 className="text-lg font-semibold line-clamp-2 text-neutral-100">
             {entry.content}

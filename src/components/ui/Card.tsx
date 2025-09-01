@@ -1,19 +1,73 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+'use client';
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'rounded-lg border bg-card text-card-foreground shadow-sm',
-      className
-    )}
-    {...props}
-  />
-));
+import React, { MouseEvent } from 'react';
+import { cn } from '@/lib/utils';
+import { useMotionValue, motion, useMotionTemplate } from 'framer-motion';
+
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  glowEffect?: boolean;
+  glowColor?: string;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  (
+    {
+      className,
+      glowEffect = false,
+      glowColor = 'rgb(109 40 217 / 0.20)',
+      ...props
+    },
+    ref
+  ) => {
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    const handleMouseMove = ({
+      clientX,
+      clientY,
+      currentTarget,
+    }: MouseEvent) => {
+      if (!glowEffect) return;
+
+      const bounds = currentTarget.getBoundingClientRect();
+      mouseX.set(clientX - bounds.left);
+      mouseY.set(clientY - bounds.top);
+    };
+
+    if (glowEffect) {
+      return (
+        <div
+          ref={ref}
+          className={cn(
+            'rounded-lg border bg-card text-card-foreground shadow-sm relative group',
+            className
+          )}
+          onMouseMove={handleMouseMove}
+          {...props}
+        >
+          <motion.div
+            className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300 rounded-lg"
+            style={{
+              background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, ${glowColor} 0%, transparent 80%)`,
+            }}
+          />
+          {props.children}
+        </div>
+      );
+    }
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'rounded-lg border bg-card text-card-foreground shadow-sm',
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
 Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<

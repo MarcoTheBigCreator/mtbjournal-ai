@@ -10,10 +10,12 @@ export function VanishInput({
   placeholders,
   onChange,
   onSubmit,
+  disabled = false,
 }: {
   placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  disabled?: boolean;
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
@@ -193,7 +195,7 @@ export function VanishInput({
       />
       <input
         onChange={(e) => {
-          if (!animating) {
+          if (!animating && !disabled) {
             setValue(e.target.value);
             onChange && onChange(e);
           }
@@ -202,14 +204,16 @@ export function VanishInput({
         ref={inputRef}
         value={value}
         type="text"
+        disabled={disabled}
         className={cn(
           'w-full relative text-sm sm:text-base z-50 border-none text-violet-400 bg-transparent h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20',
-          animating && 'text-transparent'
+          animating && 'text-transparent',
+          disabled && 'opacity-50 cursor-not-allowed'
         )}
       />
 
       <button
-        disabled={!value}
+        disabled={!value || disabled}
         type="submit"
         className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full bg-zinc-900 disabled:bg-zinc-800 transition duration-200 flex items-center justify-center"
       >

@@ -11,6 +11,7 @@ export const AiEntrySearch = () => {
   const [inputValue, setInputValue] = useState('');
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [submittedQuestion, setSubmittedQuestion] = useState('');
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -20,11 +21,13 @@ export const AiEntrySearch = () => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
+    const questionToSubmit = inputValue.trim();
+    setSubmittedQuestion(questionToSubmit);
     setIsLoading(true);
     setAiResponse(null);
 
     try {
-      const aiAnswer = await askQuestion(inputValue);
+      const aiAnswer = await askQuestion(questionToSubmit);
       if (!aiAnswer) {
         setAiResponse(null);
       } else {
@@ -52,13 +55,14 @@ export const AiEntrySearch = () => {
           placeholders={SEARCH_PLACEHOLDERS}
           onChange={onChange}
           onSubmit={handleSubmit}
+          disabled={isLoading}
         />
       </div>
 
       <AiResponseDisplay
         response={aiResponse}
         isLoading={isLoading}
-        question={inputValue}
+        question={submittedQuestion}
       />
     </div>
   );

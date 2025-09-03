@@ -26,8 +26,16 @@ export async function getEntriesSentimentScore(): Promise<AiMoodData> {
       },
     });
 
-    if (!aiAnalyses) {
-      throw new Error(`Entry not found with id: ${dbUser.id}`);
+    // Handle case when no analyses exist
+    if (!aiAnalyses || aiAnalyses.length === 0) {
+      const sentimentInformation = {
+        averageSentimentScore: 0,
+        totalNotes: 0,
+        lastRecordedMood: 'No mood recorded yet',
+        lastMoodColor: 'gray',
+      };
+
+      return { aiAnalyses: [], sentimentInformation };
     }
 
     const sumAnalysesSentimentScore = aiAnalyses.reduce(

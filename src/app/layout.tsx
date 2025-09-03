@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: 'Home | MTBJournal',
     description:
       'MTBJournal is a journal app that helps you understand your emotions and thoughts, keeping a track of your mental health.',
-    url: 'https://mtbjournal.vercel.app',
+    url: 'https://mtbjournal.app',
     siteName: 'MTBJournal',
     type: 'website',
     locale: 'en_US',

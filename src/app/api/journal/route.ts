@@ -14,7 +14,7 @@ export async function POST() {
     const createdEntry = await prisma.journalEntry.create({
       data: {
         userId: user.id,
-        content: `Start writing here about your day, your thoughts, your feelings, or anything else that comes to mind, Then the AI will analyze it and give you some insights. (It'll be automatically saved ) 📝`,
+        content: '',
       },
     });
 

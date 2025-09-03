@@ -1,2 +1,2 @@
-export * from './searchPlaceholders';
-export * from './AiConstants';
+export * from './aiConstants';
+export * from './placeholders';

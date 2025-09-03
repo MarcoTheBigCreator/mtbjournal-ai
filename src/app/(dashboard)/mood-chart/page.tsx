@@ -10,12 +10,12 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       'Welcome to your mood chart. Here you can explore your emotional journey and track your mental health.',
     applicationName: 'MTBJournal',
-    metadataBase: new URL('https://mtbjournal.vercel.app/journal'),
+    metadataBase: new URL('https://mtbjournal.app/mood-chart'),
     openGraph: {
       title: 'Mood Chart',
       description:
         'Welcome to your mood chart. Here you can explore your emotional journey and track your mental health.',
-      url: 'https://mtbjournal.vercel.app/journal',
+      url: 'https://mtbjournal.app/mood-chart',
       siteName: 'MTBJournal',
       type: 'website',
       images: [

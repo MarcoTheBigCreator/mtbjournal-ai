@@ -1,2 +1,2 @@
-export * from './aiConstants';
+export * from './AiConstants';
 export * from './placeholders';

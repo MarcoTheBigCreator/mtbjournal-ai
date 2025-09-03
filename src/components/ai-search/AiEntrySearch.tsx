@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { titleFont } from '@/config';
 import { VanishInput } from '../ui/VanishInput';
-import { SEARCH_PLACEHOLDERS } from '../../constants/searchPlaceholders';
 import { askQuestion } from '@/utils';
 import { AiResponseDisplay } from '..';
+import { SEARCH_PLACEHOLDERS } from '@/constants';
 
 export const AiEntrySearch = () => {
   const [inputValue, setInputValue] = useState('');

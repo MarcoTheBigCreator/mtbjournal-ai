@@ -9,6 +9,7 @@ import { cn } from '@/lib';
 import { titleFont } from '@/config';
 import { Analysis } from '../ui/analysis/Analysis';
 import { Entry } from '@/types';
+import { ENTRY_PLACEHOLDER } from '@/constants';
 
 interface EditorProps {
   entry: Entry;
@@ -93,6 +94,7 @@ export const Editor = ({ entry }: EditorProps) => {
             <textarea
               ref={textareaRef}
               className="w-full h-full pt-14 px-6 pb-6 text-base bg-transparent text-neutral-100 outline-none focus:outline-none resize-none"
+              placeholder={ENTRY_PLACEHOLDER}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onFocus={() => setIsFocused(true)}

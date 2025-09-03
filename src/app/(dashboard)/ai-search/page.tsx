@@ -8,12 +8,12 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       'Welcome to your AI search page. Here you can explore your emotional journey and track your mental health.',
     applicationName: 'MTBJournal',
-    metadataBase: new URL('https://mtbjournal.vercel.app/journal'),
+    metadataBase: new URL('https://mtbjournal.app/ai-search'),
     openGraph: {
       title: 'AI Search',
       description:
         'Welcome to your AI search page. Here you can explore your emotional journey and track your mental health.',
-      url: 'https://mtbjournal.vercel.app/journal',
+      url: 'https://mtbjournal.app/ai-search',
       siteName: 'MTBJournal',
       type: 'website',
       images: [

@@ -1,7 +1,7 @@
 import { Editor } from '@/components';
 import { getEntry } from '@/actions';
 import { verifyAuth } from '@/helpers/auth-helpers';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 
 interface EntryPageProps {
   params: Promise<{
@@ -9,10 +9,9 @@ interface EntryPageProps {
   }>;
 }
 
-export async function generateMetadata(
-  { params }: EntryPageProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: EntryPageProps): Promise<Metadata> {
   const { id } = await params;
 
   const entry = await getEntry(id);

@@ -16,12 +16,12 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       'Welcome to your journal dashboard. Here you can track your emotions and monitor your mental health.',
     applicationName: 'MTBJournal',
-    metadataBase: new URL('https://mtbjournal.vercel.app/journal'),
+    metadataBase: new URL('https://mtbjournal.app/journal'),
     openGraph: {
       title: 'Dashboard',
       description:
         'Welcome to your journal dashboard. Here you can track your emotions and monitor your mental health.',
-      url: 'https://mtbjournal.vercel.app/journal',
+      url: 'https://mtbjournal.app/journal',
       siteName: 'MTBJournal',
       type: 'website',
       images: [

@@ -12,13 +12,6 @@ export const createNewUser = async (): Promise<void> => {
   try {
     const user = await verifyUserServerAction();
 
-    console.log(
-      'Creating new user with Clerk ID:',
-      user.id,
-      'and email:',
-      user.emailAddresses[0].emailAddress
-    );
-
     const match = await prisma.user.findUnique({
       where: { clerkId: user.id },
     });

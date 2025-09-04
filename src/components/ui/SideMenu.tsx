@@ -47,6 +47,8 @@ export const SideMenu = () => {
                       userButtonBox: {
                         flexDirection: 'row-reverse',
                         marginBottom: '0.5rem',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
                       },
                       userButtonOuterIdentifier: {
                         fontSize: '0.875rem',

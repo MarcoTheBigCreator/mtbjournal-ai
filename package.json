@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
+    "build": "npm run prisma:deploy && npm run build:check",
     "start": "next start",
     "lint": "eslint .",
     "prisma:deploy": "prisma migrate deploy",
@@ -12,7 +12,8 @@
     "prisma:generate": "prisma generate",
     "test": "tsx --test tests/ai-services.test.ts",
     "check:db": "node scripts/check-db.mjs",
-    "test:smoke": "node --test tests/smoke.test.mjs"
+    "test:smoke": "node --test tests/smoke.test.mjs",
+    "build:check": "npm run prisma:generate && next build"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.8",

@@ -20,10 +20,10 @@ a new image. This dependency update did not start Docker or modify database data
 
 ## Build and deployment
 
-`npm run build` generates the Prisma client and compiles Next.js. It does not
-apply database migrations. Run `npm run prisma:deploy` explicitly in your release
-process when schema migrations are required. This update does not change the
-Prisma schema or add migrations.
+`npm run build` applies pending Prisma migrations, generates the Prisma client,
+and compiles Next.js, preserving the automatic deployment workflow. The build
+environment must have a valid DATABASE_URL and database access. This update does
+not change the Prisma schema or add migrations.
 
 Set the same required environment variables in the deployment environment.
 Confirm database connectivity there before checking sign-in, journal editing,
@@ -31,6 +31,8 @@ autosave, deletion, mood statistics, and AI analysis/search with a real account.
 
 ## Verification
 
+- `npm run build:check`: generates Prisma and compiles Next.js without applying
+  database migrations; use this for local compilation checks.
 - `npm run lint`: ESLint, including React and TypeScript rules.
 - `npm run typecheck`: Prisma generation, Next.js route types and TypeScript.
 - `npm test`: AI regression checks with simulated model responses and embeddings.

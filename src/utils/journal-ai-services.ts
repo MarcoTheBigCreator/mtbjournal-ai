@@ -7,7 +7,7 @@ import { PromptTemplate, ChatPromptTemplate } from '@langchain/core/prompts';
 import { aiOutputSchema } from '@/schemas';
 import { Document } from '@langchain/core/documents';
 import { RunnableSequence } from '@langchain/core/runnables';
-import { MemoryVectorStore } from 'langchain/vectorstores/memory';
+import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
 import {
   ANALYSIS_PROMPT,
   MAX_WORDS,
@@ -95,7 +95,7 @@ export const analyzeJournalEntry = async (
   const responseText = aiResponse.content as string;
 
   try {
-    return structuredOutputParser.parse(responseText);
+    return await structuredOutputParser.parse(responseText);
   } catch (error) {
     console.error(
       'Failed to parse AI analysis:',

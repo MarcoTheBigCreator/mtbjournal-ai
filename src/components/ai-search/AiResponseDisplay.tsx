@@ -14,26 +14,17 @@ interface AiResponseDisplayProps {
 }
 
 const TypewriterText = ({ text }: { text: string }) => {
-  const [displayedText, setDisplayedText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const displayedText = text.slice(0, currentIndex);
 
   useEffect(() => {
     if (!text) return;
 
-    setDisplayedText('');
-    setCurrentIndex(0);
-
+    let index = 0;
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        const nextIndex = prevIndex + 1;
-        if (nextIndex <= text.length) {
-          setDisplayedText(text.slice(0, nextIndex));
-          return nextIndex;
-        } else {
-          clearInterval(timer);
-          return prevIndex;
-        }
-      });
+      index += 1;
+      setCurrentIndex(index);
+      if (index >= text.length) clearInterval(timer);
     }, 10);
 
     return () => clearInterval(timer);
@@ -126,7 +117,7 @@ export const AiResponseDisplay = ({
               MTBJournal Response
             </span>
           </div>
-          <TypewriterText text={response} />
+          <TypewriterText key={response} text={response} />
         </motion.div>
       ) : null}
     </motion.div>

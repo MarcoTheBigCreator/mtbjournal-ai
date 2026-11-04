@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MTBJournal
 
-## Getting Started
+Journal application built with Next.js, Clerk, Prisma/PostgreSQL and LangChain.
 
-First, run the development server:
+## Development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Use Node.js 24.22.2 or a newer patched 24.x LTS release (`.nvmrc`). Keep the
+deployment runtime on Node 24 as well.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Copy `.env.template` to `.env` and configure Clerk, PostgreSQL and the AI provider.
+2. Install the locked dependencies with `npm ci`.
+3. Start your local PostgreSQL server if using the Docker configuration.
+4. Run `npm run prisma:generate` and `npm run check:db`.
+5. For a new database, apply the existing schema with `npm run prisma:deploy`.
+6. Start development with `npm run dev`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The Docker definition uses PostgreSQL 15.19, updating the old 15.3 image within
+the same major release. Back up existing data before restarting a database with
+a new image. This dependency update did not start Docker or modify database data.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Build and deployment
 
-## Learn More
+`npm run build` generates the Prisma client and compiles Next.js. It does not
+apply database migrations. Run `npm run prisma:deploy` explicitly in your release
+process when schema migrations are required. This update does not change the
+Prisma schema or add migrations.
 
-To learn more about Next.js, take a look at the following resources:
+Set the same required environment variables in the deployment environment.
+Confirm database connectivity there before checking sign-in, journal editing,
+autosave, deletion, mood statistics, and AI analysis/search with a real account.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Verification
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run lint`: ESLint, including React and TypeScript rules.
+- `npm run typecheck`: Prisma generation, Next.js route types and TypeScript.
+- `npm test`: AI regression checks with simulated model responses and embeddings.
+  These tests block external fetch calls and do not consume the AI API.
+- `npm run check:db`: read-only `SELECT 1` against the configured database.
+  It loads environment files using the same loader as Next.js.
+- `npm run test:smoke`: public routes, compiled assets and rejection of anonymous
+  journal API calls. Start the production build with `npm start` first.
+  Set `SMOKE_BASE_URL` to test a different local port.
+  Clerk development keys may redirect public routes to their development
+  handshake; that redirect does not test a completed sign-in.
+- `npm audit --omit=dev`: production dependencies.
+- `npm audit`: complete dependency tree.
 
-## Deploy on Vercel
+## Security update notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Next.js and React were updated together, middleware was renamed to `proxy.ts`,
+and Clerk was patched within its compatible 6.x line. LangChain's legacy vector
+store now comes from `@langchain/classic`, alongside current core/OpenAI packages
+and Zod 4. Prisma CLI and client remain on matching 6.19.3 versions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The Prisma configuration dependency `deepmerge-ts` is overridden to patched 8.x,
+and the TypeScript parser's `minimatch` dependency to patched 11.x. Prisma
+generation and the AI tests verify the APIs used by this application.
+
+The complete npm audit still flags ESLint's `minimatch` 3.x dependencies under
+[GHSA-g3hv-75wg-m249](https://github.com/isaacs/minimatch/security/advisories/GHSA-g3hv-75wg-m249).
+npm marks versions below 11.0.1 as affected; the upstream report describes
+10.2.6 preprocessing with `optimizationLevel >= 2`, which does not exist in 3.x.
+Keep this discrepancy under review until the plugins or advisory are updated.
+A global override to 11.x would break the callable 3.x API used by the plugins.

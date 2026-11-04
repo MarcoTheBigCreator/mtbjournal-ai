@@ -20,21 +20,21 @@ export function VanishInput({
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const startAnimation = () => {
-    intervalRef.current = setInterval(() => {
-      setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
-    }, 3000);
-  };
-  const handleVisibilityChange = () => {
-    if (document.visibilityState !== 'visible' && intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    } else if (document.visibilityState === 'visible') {
-      startAnimation();
-    }
-  };
-
   useEffect(() => {
+    const startAnimation = () => {
+      intervalRef.current = setInterval(() => {
+        setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
+      }, 3000);
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== 'visible' && intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      } else if (document.visibilityState === 'visible') {
+        startAnimation();
+      }
+    };
+
     startAnimation();
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
